@@ -20,19 +20,22 @@
 采用IO触发测距，给至少10us的高电平信号；
 模块自动发送8个40KHz的方波，自动检测是否有信号返回；
 有信号返回，通过IO输出一高电平，高电平持续的时间就是超声波从发射到返回的时间．距离=(高电平时间*声速(340m/s))/2;
+
 ![image](https://user-images.githubusercontent.com/92298865/145706433-3fcefb96-d004-4ef6-be78-4e4d0e16c134.png)
 
 
 * 首先采用数字引脚给超声波模块的Trig引脚至少10μs的高电平信号，触发SR04模块测距功能；
+* 
 ![image](https://user-images.githubusercontent.com/92298865/145706460-7f0ebaad-c930-40be-89cd-321daa697700.png)
 
 * 触发后，模块会自动发送8个40KHz的超声波脉冲，并自动检测是否有信号返回。这步会由模块内部自动完成。
+* 
 ![image](https://user-images.githubusercontent.com/92298865/145706463-2f514818-1853-4288-bd1d-31399d8f356d.png)
 
 * 如有信号返回，Echo引脚会输出高电平，高电平持续的时间就是超声波从发射到返回的时间。此时，我们能使用pulseIn() 函数获取到测距的结果，并计算出距被测物的实际距离。
+* 
 ![image](https://user-images.githubusercontent.com/92298865/145706469-6a12ef0c-e9b7-4500-bfc6-f854dc085522.png)
 
-#### buzzer
 
 ### 超声波传感器的引脚定义
 超声波传感器引脚	定义
@@ -41,28 +44,67 @@ trig	发送端
 echo	接收端
 gnd	GND
 ### 硬件
-the things network 主控器*1
+arduino uno wifi  主控器*1
+
 超声波传感器*2
+
 buzzer*1
+
+button*1
+
+servo*1
+
+red led*2
+
+green led*2
+
+10 kOhm resistor*1
+
+100Ohm resistor*1
+
+220hm resistor*4
 
 ### 软件
 arduino
-the things network
+
+mqtt
 
 ## 步骤
 本项目涉及的步骤：
 
-1. 在the things network Cloud Platform 制作一台设备
+1. 设置Wi-Fi链接
+* Include the necessary libraries.
+* Create a header file to store Wi-Fi credentials.
+* Configure the publisher device to create three topics and publish them to a broker.
+* Configure the subscriber device to subscribe to the three topics.
+* 加密
+*publish 
 
-2. 在 the things network 中制作一个应用程序
+2. 设置时间
 
-3. 在 the things network 中制定一项规则
+3. 链接传感器
 
-4. 准备 Arduino
+4.Storing data on a RPI gateway
 
-5. 连接传感器
+Installing Raspberry Pi imager
+Select sd card and setup some of the SSH / SSID info
+Insert the card into the RPi and power it up
+Log into the device using SSH
+
+
+
+5.Visualising time series data
+
+Installing the Influx, Telegraf and Grafana
+Setting up Telegraf configuration Telegraf configuration
+My address http://stud-pi-ucfncui.local：3000
+Adding my first datasource-InfluxDB
+Create Dashboard and seeing the data
+
+
+Block Diagram of Smart Parking System
+![image](https://user-images.githubusercontent.com/92298865/146024837-c6d2d515-1cae-401b-a668-093745d41770.png)
+
+
+Parking lot using ultrasonic sensor
 电路图
-6. 准备树莓派
-
-7. 开发 Web 应用程序
-
