@@ -13,6 +13,11 @@ In the parking lot under the shopping mall or office building, a parking space i
   3/when car parking in the space the led will changed from green to red.and the number of free slot will changed from 2 to 1 and shows in mqtt and grafana
 
   4/when the vehicle is too close the wall, it is easy to occur, so the buzzer is set to send an alarm
+  
+* Block Diagram of Smart Parking System
+
+![block diagram](https://user-images.githubusercontent.com/92298865/146174958-f8e203d5-1266-4475-8886-9c8c16de91a3.jpg)
+
 
 * Please enjoy the demo video of my demo project before the detailed introduction.
 
@@ -146,9 +151,6 @@ Steps involved in this project.
   
 ![501639571585_ pic](https://user-images.githubusercontent.com/92298865/146187314-2ce818d6-617e-4ef6-a6eb-c5bee62b37a7.jpg)
 
-* Block Diagram of Smart Parking System
-
-![block diagram](https://user-images.githubusercontent.com/92298865/146174958-f8e203d5-1266-4475-8886-9c8c16de91a3.jpg)
 
 
 Parking lot using ultrasonic sensor
