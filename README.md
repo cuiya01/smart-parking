@@ -4,7 +4,7 @@
 * Whenever you drive to a place and need to park, are you still worry about finding a parking space? Are you wasting too much time in searching for a parking space? With smart parking, we can quickly determine and find the vacant parking spots and find the right parking spot for ourselves.
 In the parking lot under the shopping mall or office building, a parking space indicator will be installed on the parking space to indicate whether the space is parked or not, when it is found to be a red light it means that the space is already occupied by the vehicle, the light is green then it means that the space is empty, we can quickly identify the empty space by the light in front of the parking space, and quickly find the parking space in order for us to avoid wasting too much time in lifting the car.
 
-* code function
+* core functionality
 
   1/click the button and the blocking pole up it make car come in
 
