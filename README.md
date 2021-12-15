@@ -5,10 +5,14 @@
 In the parking lot under the shopping mall or office building, a parking space indicator will be installed on the parking space to indicate whether the space is parked or not, when it is found to be a red light it means that the space is already occupied by the vehicle, the light is green then it means that the space is empty, we can quickly identify the empty space by the light in front of the parking space, and quickly find the parking space in order for us to avoid wasting too much time in lifting the car.
 
 * code function
-1/click the button and the blocking pole up it make car come in
-2/determine the entries number into the parking lot based on the number of button presses
-3/when car parking in the space the led will changed from green to red.and the number of free slot will changed from 2 to 1 and shows in mqtt and grafana
-4/when the vehicle is too close the wall, it is easy to occur, so the buzzer is set to send an alarm
+
+  1/click the button and the blocking pole up it make car come in
+
+  2/determine the entries number into the parking lot based on the number of button presses
+
+  3/when car parking in the space the led will changed from green to red.and the number of free slot will changed from 2 to 1 and shows in mqtt and grafana
+
+  4/when the vehicle is too close the wall, it is easy to occur, so the buzzer is set to send an alarm
 
 * Please enjoy the demo video of my demo project before the detailed introduction.
 https://user-images.githubusercontent.com/92298865/146174071-b85d327e-f593-4db6-9f8d-e9fff5a95171.mp4
@@ -40,9 +44,13 @@ If there is a signal return, a high level is output through IO, and the duration
 
 ### Ultrasonic sensor pin definition
 Ultrasonic sensor pins Definition
+
 vcc VCC
+
 trig Transmitter
+
 echo Receiver
+
 gnd GND
 ### Hardware
 arduino uno wifi master controller*1
@@ -74,7 +82,7 @@ grafana
 ## Steps
 Steps involved in this project.
 
-1. Set up the Wi-Fi link
+1. Set up the Wi-Fi link and connect mqtt
 * Include the necessary libraries.
 * Create a header file to store Wi-Fi credentials.
 * Configure the publisher device to create three topics and publish them to a broker.
@@ -82,11 +90,19 @@ Steps involved in this project.
 * Encryption
 *publish 
 
+![image](https://user-images.githubusercontent.com/92298865/146184855-e605f2df-d481-41dc-8721-a9805c9b9b00.png)
+
 
 2. link sensor
+* circuit diagram
+
 ![circuit diagram_bb](https://user-images.githubusercontent.com/92298865/146112310-f0a5e115-2b77-44f1-82cf-5a03b6c431cb.jpg)
 * phototype
+
 ![491639566582_ pic_hd](https://user-images.githubusercontent.com/92298865/146176185-5b07b744-ec83-4858-97b5-345c8252f4b8.jpg)
+* get the data form arduino
+
+![image](https://user-images.githubusercontent.com/92298865/146184918-2f237610-1798-4771-8bf2-b6be4139cbd4.png)
 
 
 3. Storing data on a RPI gateway
@@ -105,9 +121,28 @@ Steps involved in this project.
 * My address http://stud-pi-ucfncui.local:3000
 * Adding my first datasource-InfluxDB
 * Create Dashboard and seeing the data
+* data visualization：
+  
+  1/distance1
+  
+  The distance of the parking space can show whether there are cars in the place, so it can reflect whether people like the parking space, which can help to      plan   
+  the location of the parking space better
+  
+  2/distance2
+  
+  3/freeslot
+  
+  It is possible to calculate the number of empty spaces in this parking lot to help people better plan whether to enter this parking lot to find a spot. 
+  
+  For managers, it is also possible to know how full this parking lot is.
+  
+  4/car count
+  
+  Helps managers understand how many vehicles enter the parking lot each day
+  
+![501639571585_ pic](https://user-images.githubusercontent.com/92298865/146187314-2ce818d6-617e-4ef6-a6eb-c5bee62b37a7.jpg)
 
-
-Block Diagram of Smart Parking System
+* Block Diagram of Smart Parking System
 
 ![block diagram](https://user-images.githubusercontent.com/92298865/146174958-f8e203d5-1266-4475-8886-9c8c16de91a3.jpg)
 
