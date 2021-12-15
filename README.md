@@ -1,14 +1,19 @@
 # smart-parking
 ## Introduction
 ### background
-Whenever you drive to a place and need to park, are you still worry about finding a parking space? Are you wasting too much time in searching for a parking space? With smart parking, we can quickly determine and find the vacant parking spots and find the right parking spot for ourselves.
+* Whenever you drive to a place and need to park, are you still worry about finding a parking space? Are you wasting too much time in searching for a parking space? With smart parking, we can quickly determine and find the vacant parking spots and find the right parking spot for ourselves.
 In the parking lot under the shopping mall or office building, a parking space indicator will be installed on the parking space to indicate whether the space is parked or not, when it is found to be a red light it means that the space is already occupied by the vehicle, the light is green then it means that the space is empty, we can quickly identify the empty space by the light in front of the parking space, and quickly find the parking space in order for us to avoid wasting too much time in lifting the car.
 
+* code function
+1/click the button and the blocking pole up it make car come in
+2/determine the entries number into the parking lot based on the number of button presses
+3/when car parking in the space the led will changed from green to red.and the number of free slot will changed from 2 to 1 and shows in mqtt and grafana
+4/when the vehicle is too close the wall, it is easy to occur, so the buzzer is set to send an alarm
 
+* Please enjoy the demo video of my demo project before the detailed introduction.
 https://user-images.githubusercontent.com/92298865/146174071-b85d327e-f593-4db6-9f8d-e9fff5a95171.mp4
 
 
-Please enjoy the demo video of my demo project before the detailed introduction.
 
 ### Ultrasonic distance measurement
 Ultrasonic sensors are sensors developed using the properties of ultrasonic waves. We use ultrasonic sensors will generally be used for distance measurement, compared to other distance measurement sensors have easy to use, high sensitivity and other characteristics. For ultrasonic sensors various characteristics, ultrasonic detection is widely used in industry, national defense, biomedicine and other aspects.
@@ -18,21 +23,19 @@ Ultrasonic sensors are sensors developed using the properties of ultrasonic wave
 Using IO trigger ranging, giving a high level signal of at least 10us.
 the module automatically sends 8 square waves of 40KHz and automatically detects whether there is a signal return.
 If there is a signal return, a high level is output through IO, and the duration of the high level is the time of ultrasonic wave from transmitting to returning. Distance = (high level time * speed of sound (340m/s))/2;
+![1](https://user-images.githubusercontent.com/92298865/146176513-24706af5-c962-4ad0-9425-46eb95173ce6.jpg)
 
-![image](https://user-images.githubusercontent.com/92298865/145706433-3fcefb96-d004-4ef6-be78-4e4d0e16c134.png)
 
 
 * The first digital pin is used to give the Trig pin of the ultrasonic module a high level signal of at least 10μs to trigger the distance measurement function of the SR04 module.
-* 
-![image](https://user-images.githubusercontent.com/92298865/145706460-7f0ebaad-c930-40be-89cd-321daa697700.png)
+* ![2](https://user-images.githubusercontent.com/92298865/146177723-1d9856e1-bdae-4f47-a279-781b52d7b512.jpg)
 
 * After triggering, the module will automatically send 8 ultrasonic pulses of 40KHz and automatically detect if a signal is returned. This step will be done automatically by the module internally.
-* 
-![image](https://user-images.githubusercontent.com/92298865/145706463-2f514818-1853-4288-bd1d-31399d8f356d.png)
+* ![3](https://user-images.githubusercontent.com/92298865/146177747-68c36cef-38fc-43bd-af2a-8d14be923c24.jpg)
 
 * If a signal is returned, the Echo pin will output a high level, and the duration of the high level is the time between the emission and the return of the ultrasonic wave. At this point, we can use the pulseIn() function to get the result of the distance measurement and calculate the actual distance from the object to be measured.
-*The 
-![image](https://user-images.githubusercontent.com/92298865/145706469-6a12ef0c-e9b7-4500-bfc6-f854dc085522.png)
+* ![4](https://user-images.githubusercontent.com/92298865/146177773-e1312bd8-af4e-40fe-ada8-a83dc3cd2592.jpg)
+
 
 
 ### Ultrasonic sensor pin definition
@@ -82,6 +85,8 @@ Steps involved in this project.
 
 2. link sensor
 ![circuit diagram_bb](https://user-images.githubusercontent.com/92298865/146112310-f0a5e115-2b77-44f1-82cf-5a03b6c431cb.jpg)
+* phototype
+![491639566582_ pic_hd](https://user-images.githubusercontent.com/92298865/146176185-5b07b744-ec83-4858-97b5-345c8252f4b8.jpg)
 
 
 3. Storing data on a RPI gateway
@@ -110,5 +115,3 @@ Block Diagram of Smart Parking System
 Parking lot using ultrasonic sensor
 Circuit diagram
 
-
-Translated with www.DeepL.com/Translator (free version)
