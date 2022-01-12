@@ -50,14 +50,14 @@ int buttonPushCounter = 0;
 int buttonState = 0;
 int lastButtonState = 0;
 
-//设立参数
+// Set up parameters
 void setup() {
   Serial.begin(9600);
   while (!Serial) {
     ; 
   }
 
-//设立wifi
+// Set up wifi
   Serial.print("Attempting to connect to WPA SSID: ");
   Serial.println(ssid);
   while (WiFi.begin(ssid,password) != WL_CONNECTED) {
@@ -89,7 +89,8 @@ String clientId = "UnoWiFIiClient-";
 
 
   Serial.begin (9600); // initiate serial communication to raspberry pi
-//  设立超声传感器
+
+// set up of ultrasound
   pinMode(trigPin1, OUTPUT);
   pinMode(echoPin1, INPUT);
   pinMode(trigPin1, OUTPUT); 
@@ -97,23 +98,24 @@ String clientId = "UnoWiFIiClient-";
   pinMode(trigPin2, OUTPUT);
   pinMode(echoPin2, INPUT);
   
-// 设立buzzer
+// set up buzzer
   pinMode(soundbuzzer1, OUTPUT);
   
-//设立led
+//set up led
   pinMode(redLED1, OUTPUT);
   pinMode(redLED2, OUTPUT);
   pinMode(greenLED1, OUTPUT);
   pinMode(greenLED2, OUTPUT);
 
-//设立servo
+//set up servo
   myservo.attach(servoPin);
   pinMode(buttonPin, INPUT);
   digitalWrite(buttonPin, HIGH);
   myservo.write(180);
   delay(100);
   myservo.detach();
-//设立button
+
+//set up button
  pinMode(buttonPin, INPUT);
 }
 
@@ -121,7 +123,7 @@ String clientId = "UnoWiFIiClient-";
 
 
 void loop() {
-//mqtt取数
+//mqtt take number
 
   mqttClient.poll();
 
@@ -151,7 +153,7 @@ void loop() {
   }
 
   
-//输出两个距离
+//Output two distances
   digitalWrite(trigPin1, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin1, HIGH);
@@ -178,7 +180,7 @@ void loop() {
 
   
   
-//空车位计算
+//Calculation of empty parking spaces
   digitalWrite(trigPin1, LOW); 
   delayMicroseconds(2); 
   digitalWrite(trigPin1, HIGH);
@@ -206,7 +208,7 @@ void loop() {
   delay(300);
   
   
-//led灯触发条件  
+//Trigger conditions for led lights  
 
 
 
@@ -229,7 +231,7 @@ void loop() {
   }  
 
   
-//  buzzer触发的条件 
+//  Conditions for buzzer triggering 
   if (distance2 > 3 || distance2 <= 0){
   noTone(soundbuzzer1);
   }
