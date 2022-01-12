@@ -1,0 +1,270 @@
+#define echoPin1 9 // Echo Pin for sonar 1
+#define trigPin1 8 // Trigger Pin for sonar 1
+#define echoPin2 7 // Echo Pin for sonar 2 
+#define trigPin2 6 // Trigger Pin for sonar 2
+#define soundbuzzer1 5
+#define redLED1 13
+#define greenLED1 12
+#define redLED2 4
+#define greenLED2 3
+#define servoPin 11
+#define buttonPin 10
+
+#include <Servo.h>
+#include <ArduinoMqttClient.h>
+#include <WiFiNINA.h>
+#include "arduino_secrets.h"
+
+Servo myservo;
+
+WiFiClient wifiClient;
+MqttClient mqttClient(wifiClient);
+
+const char* ssid     = SECRET_SSID;
+const char* password = SECRET_PASS;
+const char* mqttuser = SECRET_MQTTUSER;
+const char* mqttpass = SECRET_MQTTPASS;
+
+const char broker[] = "mqtt.cetools.org";
+int        port     = 1884;
+
+const char topic[]  = "student/CASA0016/ucfncui/smart parking/distance1";
+const char topic2[]  = "student/CASA0016/ucfncui/smart parking/distance2";
+const char topic3[]  = "student/CASA0016/ucfncui/smart parking/freeslot";
+const char topic4[]  = "student/CASA0016/ucfncui/smart parking/car count";
+
+//set interval for sending messages (milliseconds)
+const long interval = 8000;
+unsigned long previousMillis = 0;
+
+
+long duration1, distance1; // Duration used to calculate distance
+long duration2, distance2;
+int count = 0;
+int countslot=0;
+int freeSlot =0;
+int sound = 500;
+int slot1=0;
+int slot2=0;
+int buttonPushCounter = 0;
+int buttonState = 0;
+int lastButtonState = 0;
+
+//设立参数
+void setup() {
+  Serial.begin(9600);
+  while (!Serial) {
+    ; 
+  }
+
+//设立wifi
+  Serial.print("Attempting to connect to WPA SSID: ");
+  Serial.println(ssid);
+  while (WiFi.begin(ssid,password) != WL_CONNECTED) {
+    // failed, retry
+    Serial.print(".");
+    delay(500);
+  }
+
+  Serial.println("You're connected to the network");
+  Serial.println();
+
+  Serial.print("Attempting to connect to the MQTT broker: ");
+  Serial.println(broker);
+
+String clientId = "UnoWiFIiClient-";
+  clientId += String(random(0xffff), HEX);
+  mqttClient.setId(clientId);
+  mqttClient.setUsernamePassword(mqttuser, mqttpass);
+
+  if (!mqttClient.connect(broker, port)) {
+    Serial.print("MQTT connection failed! Error code = ");
+    Serial.println(mqttClient.connectError());
+
+    while (1);
+  }
+
+  Serial.println("You're connected to the MQTT broker!");
+  Serial.println();
+
+
+  Serial.begin (9600); // initiate serial communication to raspberry pi
+//  设立超声传感器
+  pinMode(trigPin1, OUTPUT);
+  pinMode(echoPin1, INPUT);
+  pinMode(trigPin1, OUTPUT); 
+  pinMode(echoPin1, INPUT);  
+  pinMode(trigPin2, OUTPUT);
+  pinMode(echoPin2, INPUT);
+  
+// 设立buzzer
+  pinMode(soundbuzzer1, OUTPUT);
+  
+//设立led
+  pinMode(redLED1, OUTPUT);
+  pinMode(redLED2, OUTPUT);
+  pinMode(greenLED1, OUTPUT);
+  pinMode(greenLED2, OUTPUT);
+
+//设立servo
+  myservo.attach(servoPin);
+  pinMode(buttonPin, INPUT);
+  digitalWrite(buttonPin, HIGH);
+  myservo.write(180);
+  delay(100);
+  myservo.detach();
+//设立button
+ pinMode(buttonPin, INPUT);
+}
+
+
+
+
+void loop() {
+//mqtt取数
+
+  mqttClient.poll();
+
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis >= interval) {
+    // save the last time a message was sent
+    previousMillis = currentMillis;
+
+    // send message, the Print interface can be used to set the message contents
+    mqttClient.beginMessage(topic);
+    mqttClient.print(distance1);
+    mqttClient.endMessage();
+
+    mqttClient.beginMessage(topic2);
+    mqttClient.print(distance2);
+    mqttClient.endMessage();
+
+    mqttClient.beginMessage(topic3);
+    mqttClient.print(freeSlot);
+    mqttClient.endMessage();
+
+    mqttClient.beginMessage(topic4);
+    mqttClient.print(buttonPushCounter);
+    mqttClient.endMessage();
+
+  }
+
+  
+//输出两个距离
+  digitalWrite(trigPin1, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin1, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin1, LOW);
+  duration1 = pulseIn(echoPin1, HIGH);
+  distance1 = duration1 * 0.034 / 2;
+  Serial.print(" Distance1: ");
+  Serial.print(distance1);
+  Serial.println(" cm");
+
+  digitalWrite(trigPin2, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin2, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin2, LOW);
+  duration2 = pulseIn(echoPin2, HIGH);
+  distance2 = duration2 * 0.034 / 2;
+  Serial.print("Distance2: ");
+  Serial.print(distance2);
+  Serial.println(" cm");
+
+
+
+  
+  
+//空车位计算
+  digitalWrite(trigPin1, LOW); 
+  delayMicroseconds(2); 
+  digitalWrite(trigPin1, HIGH);
+  delayMicroseconds(10); 
+  digitalWrite(trigPin1, LOW);
+
+  digitalWrite(trigPin2, LOW);
+  delayMicroseconds(2); 
+  digitalWrite(trigPin2, HIGH);
+  delayMicroseconds(10); 
+  digitalWrite(trigPin2, LOW);
+
+   if(distance1<10)
+     slot1 = 1;
+   else slot1 = 0;
+
+   if(distance2<10)
+     slot2 = 1;
+   else slot2 = 0;
+  
+  countslot = slot1+slot2 ;;
+  freeSlot = 2 - countslot;
+  Serial.print("freeslot: ");
+  Serial.println(freeSlot);
+  delay(300);
+  
+  
+//led灯触发条件  
+
+
+
+ if(distance1>10){
+  digitalWrite(redLED1,LOW);
+  digitalWrite(greenLED1,HIGH);
+   }
+  else {
+  digitalWrite(redLED1,HIGH);
+  digitalWrite(greenLED1,LOW);
+ }  
+
+   if(distance2>10){
+   digitalWrite(redLED2,LOW);
+   digitalWrite(greenLED2,HIGH);
+   }
+  else {
+  digitalWrite(redLED2,HIGH);
+  digitalWrite(greenLED2,LOW);
+  }  
+
+  
+//  buzzer触发的条件 
+  if (distance2 > 3 || distance2 <= 0){
+  noTone(soundbuzzer1);
+  }
+  else {
+  tone(soundbuzzer1, sound);
+  }
+
+  
+  delay(300);
+  
+//servo
+    int buttonVal = digitalRead(buttonPin);
+    if(buttonVal == HIGH) {
+    myservo.attach(servoPin);
+    myservo.write(90);
+    delay(2000);
+    myservo.write(0);
+    }
+    else {
+    myservo.write(0);
+    }
+
+//button count  
+    int buttonState = digitalRead(buttonPin);
+    if (buttonState != lastButtonState) {
+    if (buttonState == HIGH) {
+      buttonPushCounter=buttonPushCounter+1;
+    }
+    else{
+buttonPushCounter=buttonPushCounter;
+    delay(50);
+  }
+    }
+
+  Serial.print("car count: ");
+  Serial.print(buttonPushCounter);
+  Serial.println(" ");
+  }
